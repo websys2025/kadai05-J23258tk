@@ -1,21 +1,27 @@
+<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="utf-8">
-    <title>演習課題5-2：外部APIの呼び出しテスト</title>
+    <title>課題5-2：猫画像API</title>
 </head>
 <body>
-    <h1 id="msg">何かのAPI</h1>
-    <form name="apiform"><p>
-        何かのフォーム：<input type="text" name="form_data">
-        <button type="button" id="btn1" onclick="some_api(this.form)">実行</button>
-    </p></form>
-    
-    <div id="result"></div>
+    <h1>ランダム猫画像表示</h1>
+    <p>
+        <button onclick="loadCat()">猫画像を表示</button>
+    </p>
+    <div id="result">ここに画像が表示されます</div>
+
     <script>
-        async function some_api(myForm) {
-            // ここにコードを書く
-            document.getElementById("result").innerHTML += myForm.form_data.value+"<br />";
-            document.apiform.reset();
+        async function loadCat() {
+            const url = "https://api.thecatapi.com/v1/images/search";
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                const img = `<img src="${data[0].url}" width="300" alt="猫画像">`;
+                document.getElementById("result").innerHTML = img;
+            } catch (e) {
+                document.getElementById("result").innerText = "取得に失敗しました";
+            }
         }
     </script>
 </body>
